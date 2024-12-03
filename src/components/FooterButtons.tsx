@@ -9,11 +9,23 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 
-const FooterButtons = () => {
+interface FooterButtonsProps {
+  onVideoWatch: () => void;
+}
+
+const FooterButtons = ({ onVideoWatch }: FooterButtonsProps) => {
   const handleClick = (action: string) => {
     toast({
       title: "Coming Soon",
       description: `${action} feature will be available soon!`,
+    });
+  };
+
+  const handleVideoClick = () => {
+    onVideoWatch();
+    toast({
+      title: "Reward Earned!",
+      description: "You've earned 1,000 coins for watching the video!",
     });
   };
 
@@ -48,10 +60,11 @@ const FooterButtons = () => {
                 href="https://youtu.be/hriBR6-kc9A?si=wf0z6CSByaLf12qT" 
                 target="_blank" 
                 rel="noopener noreferrer"
+                onClick={handleVideoClick}
                 className="block p-4 rounded-lg bg-game-primary/20 hover:bg-game-primary/30 transition-colors cursor-pointer"
               >
                 <h3 className="text-lg font-semibold">Watch Daily Video</h3>
-                <p className="text-sm text-game-light/80">Earn 50 coins by watching today's video</p>
+                <p className="text-sm text-game-light/80">Earn 1,000 coins by watching today's video</p>
               </a>
             </div>
           </DialogContent>

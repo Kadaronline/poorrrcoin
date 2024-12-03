@@ -26,7 +26,7 @@ const Index = () => {
           <Leaderboard />
         </div>
       </div>
-      <FooterButtons />
+      <FooterButtons onVideoWatch={() => setCoins(prev => prev + 1000)} />
     </div>
   );
 };

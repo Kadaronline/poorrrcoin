@@ -1,27 +1,22 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { Coins } from "lucide-react";
 
 interface CoinButtonProps {
   onTap: () => void;
 }
 
 const CoinButton = ({ onTap }: CoinButtonProps) => {
-  const [isPressed, setIsPressed] = useState(false);
-
-  const handleTap = () => {
-    setIsPressed(true);
-    onTap();
-    setTimeout(() => setIsPressed(false), 100);
-  };
-
   return (
     <motion.button
-      className="w-32 h-32 rounded-full bg-gradient-to-br from-game-primary to-game-secondary shadow-lg flex items-center justify-center cursor-pointer"
+      whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      onClick={handleTap}
+      onClick={onTap}
+      className="w-48 h-48 rounded-full overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300 focus:outline-none"
     >
-      <Coins className={`w-16 h-16 text-white ${isPressed ? "animate-pop" : "animate-float"}`} />
+      <img
+        src="/lovable-uploads/26331f82-cb1d-4e99-bc17-3a0a78023dfb.png"
+        alt="Poor Coin Logo"
+        className="w-full h-full object-cover"
+      />
     </motion.button>
   );
 };

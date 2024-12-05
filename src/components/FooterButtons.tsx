@@ -21,6 +21,10 @@ const FooterButtons = ({ onVideoWatch }: FooterButtonsProps) => {
   });
 
   const handleClick = (action: string) => {
+    if (action === "Invite") {
+      handleInvite();
+      return;
+    }
     toast({
       title: "Coming Soon",
       description: `${action} feature will be available soon!`,
@@ -43,17 +47,42 @@ const FooterButtons = ({ onVideoWatch }: FooterButtonsProps) => {
 
     window.open(links[platform], '_blank');
     
-    // Update completed tasks
     const newCompletedTasks = { ...completedTasks, [platform]: true };
     setCompletedTasks(newCompletedTasks);
     localStorage.setItem("completedTasks", JSON.stringify(newCompletedTasks));
 
-    // Give reward
-    onVideoWatch(); // Using the same reward mechanism as video watch
+    onVideoWatch();
     toast({
       title: "Reward Earned!",
       description: `You've earned 1,000 coins for subscribing to our ${platform} channel!`,
     });
+  };
+
+  const handleInvite = () => {
+    const inviteLink = `${window.location.origin}?ref=${Date.now()}`; // Temporary referral code using timestamp
+    
+    if (navigator.share) {
+      navigator.share({
+        title: 'Join Poor Coin!',
+        text: 'Join Poor Coin and we both get 5,000 coins! 🎉',
+        url: inviteLink
+      }).then(() => {
+        toast({
+          title: "Link Shared!",
+          description: "You'll receive 5,000 coins when your friend joins!",
+        });
+      }).catch(() => {
+        // Handle share error silently
+      });
+    } else {
+      // Fallback for browsers that don't support Web Share API
+      navigator.clipboard.writeText(inviteLink).then(() => {
+        toast({
+          title: "Link Copied!",
+          description: "Share this link with friends. You'll receive 5,000 coins when they join!",
+        });
+      });
+    }
   };
 
   return (

@@ -8,12 +8,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
+import { useState } from "react";
 
 interface FooterButtonsProps {
   onVideoWatch: () => void;
 }
 
 const FooterButtons = ({ onVideoWatch }: FooterButtonsProps) => {
+  const [completedTasks, setCompletedTasks] = useState(() => {
+    const saved = localStorage.getItem("completedTasks");
+    return saved ? JSON.parse(saved) : { telegram: false, youtube: false };
+  });
+
   const handleClick = (action: string) => {
     toast({
       title: "Coming Soon",
@@ -26,6 +32,27 @@ const FooterButtons = ({ onVideoWatch }: FooterButtonsProps) => {
     toast({
       title: "Reward Earned!",
       description: "You've earned 1,000 coins for watching the video!",
+    });
+  };
+
+  const handleSubscribe = (platform: 'telegram' | 'youtube') => {
+    const links = {
+      telegram: 'https://t.me/kadaronline',
+      youtube: 'https://youtube.com/@kadaronline?si=npGBDxCDfpm4Ivsu'
+    };
+
+    window.open(links[platform], '_blank');
+    
+    // Update completed tasks
+    const newCompletedTasks = { ...completedTasks, [platform]: true };
+    setCompletedTasks(newCompletedTasks);
+    localStorage.setItem("completedTasks", JSON.stringify(newCompletedTasks));
+
+    // Give reward
+    onVideoWatch(); // Using the same reward mechanism as video watch
+    toast({
+      title: "Reward Earned!",
+      description: `You've earned 1,000 coins for subscribing to our ${platform} channel!`,
     });
   };
 
@@ -66,6 +93,33 @@ const FooterButtons = ({ onVideoWatch }: FooterButtonsProps) => {
                 <h3 className="text-lg font-semibold">Watch Daily Video</h3>
                 <p className="text-sm text-game-light/80">Earn 1,000 coins by watching today's video</p>
               </a>
+
+              {!completedTasks.telegram && (
+                <div 
+                  onClick={() => handleSubscribe('telegram')}
+                  className="block p-4 rounded-lg bg-game-primary/20 hover:bg-game-primary/30 transition-colors cursor-pointer"
+                >
+                  <h3 className="text-lg font-semibold">Join Telegram Channel</h3>
+                  <p className="text-sm text-game-light/80">Earn 1,000 coins by joining our Telegram channel</p>
+                </div>
+              )}
+
+              {!completedTasks.youtube && (
+                <div 
+                  onClick={() => handleSubscribe('youtube')}
+                  className="block p-4 rounded-lg bg-game-primary/20 hover:bg-game-primary/30 transition-colors cursor-pointer"
+                >
+                  <h3 className="text-lg font-semibold">Subscribe to YouTube</h3>
+                  <p className="text-sm text-game-light/80">Earn 1,000 coins by subscribing to our YouTube channel</p>
+                </div>
+              )}
+
+              {completedTasks.telegram && completedTasks.youtube && (
+                <div className="p-4 rounded-lg bg-green-500/20 text-center">
+                  <h3 className="text-lg font-semibold">All Tasks Completed!</h3>
+                  <p className="text-sm text-game-light/80">Great job! Check back later for more tasks.</p>
+                </div>
+              )}
             </div>
           </DialogContent>
         </Dialog>

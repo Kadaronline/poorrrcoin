@@ -225,16 +225,16 @@ const FooterButtons = ({ onVideoWatch }: FooterButtonsProps) => {
               <DialogTitle className="text-xl font-bold text-center text-game-light">Daily Tasks</DialogTitle>
             </DialogHeader>
             <div className="space-y-4 p-4">
-              <a 
-                href="https://youtu.be/hriBR6-kc9A?si=wf0z6CSByaLf12qT" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                onClick={handleVideoClick}
+              <div 
+                onClick={() => {
+                  window.open("https://youtu.be/hriBR6-kc9A?si=wf0z6CSByaLf12qT", "_blank");
+                  handleVideoStart("https://youtu.be/hriBR6-kc9A?si=wf0z6CSByaLf12qT");
+                }}
                 className="block p-4 rounded-lg bg-game-primary/20 hover:bg-game-primary/30 transition-colors cursor-pointer"
               >
                 <h3 className="text-lg font-semibold">Watch Daily Video</h3>
                 <p className="text-sm text-game-light/80">Earn 1,000 coins by watching today's video</p>
-              </a>
+              </div>
 
               {!completedTasks.telegram && (
                 <div 

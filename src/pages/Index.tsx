@@ -22,25 +22,25 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-game-dark via-black to-game-primary/30 relative overflow-hidden p-4 pb-24">
+    <div className="min-h-screen bg-gradient-to-br from-[#0A192F] via-[#112240] to-[#233554] relative overflow-hidden p-4 pb-24">
       {/* Animated background circles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
           animate={{
             scale: [1, 1.2, 1],
-            opacity: [0.3, 0.2, 0.3],
+            opacity: [0.2, 0.1, 0.2],
           }}
           transition={{
             duration: 8,
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 rounded-full bg-game-primary/20 blur-3xl"
+          className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 rounded-full bg-game-primary/10 blur-3xl"
         />
         <motion.div
           animate={{
             scale: [1, 1.3, 1],
-            opacity: [0.2, 0.1, 0.2],
+            opacity: [0.15, 0.05, 0.15],
           }}
           transition={{
             duration: 10,
@@ -48,7 +48,7 @@ const Index = () => {
             ease: "easeInOut",
             delay: 1,
           }}
-          className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 rounded-full bg-game-secondary/20 blur-3xl"
+          className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 rounded-full bg-game-secondary/10 blur-3xl"
         />
       </div>
 

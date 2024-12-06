@@ -1,4 +1,4 @@
-import { Coins, ListTodo, UserPlus, Gift, BookOpen } from "lucide-react";
+import { Coins, ListTodo, UserPlus, Gift } from "lucide-react";
 import { Button } from "./ui/button";
 import { toast } from "./ui/use-toast";
 import {
@@ -87,7 +87,7 @@ const FooterButtons = ({ onVideoWatch }: FooterButtonsProps) => {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-game-dark to-transparent p-4">
-      <div className="max-w-4xl mx-auto grid grid-cols-5 gap-2">
+      <div className="max-w-4xl mx-auto grid grid-cols-4 gap-2">
         <Button
           variant="ghost"
           className="flex flex-col items-center gap-1 text-game-light hover:text-white hover:bg-game-primary/20"
@@ -169,15 +169,6 @@ const FooterButtons = ({ onVideoWatch }: FooterButtonsProps) => {
         >
           <Gift className="h-5 w-5" />
           <span className="text-xs">Drop</span>
-        </Button>
-
-        <Button
-          variant="ghost"
-          className="flex flex-col items-center gap-1 text-game-light hover:text-white hover:bg-game-primary/20"
-          onClick={() => handleClick("Learn")}
-        >
-          <BookOpen className="h-5 w-5" />
-          <span className="text-xs">Learn</span>
         </Button>
       </div>
     </div>

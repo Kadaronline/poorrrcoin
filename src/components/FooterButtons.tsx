@@ -59,7 +59,11 @@ const FooterButtons = ({ onVideoWatch }: FooterButtonsProps) => {
   };
 
   const handleInvite = () => {
-    const inviteLink = `${window.location.origin}?ref=${Date.now()}`; // Temporary referral code using timestamp
+    // Generate a simple referral code using timestamp
+    const referralCode = Date.now().toString();
+    // Create the invite link using the current hostname without any port
+    const baseUrl = window.location.protocol + '//' + window.location.hostname;
+    const inviteLink = `${baseUrl}?ref=${referralCode}`;
     
     if (navigator.share) {
       navigator.share({

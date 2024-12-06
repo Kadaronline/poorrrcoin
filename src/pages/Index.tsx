@@ -21,6 +21,10 @@ const Index = () => {
     setCoins((prev) => prev + 1);
   };
 
+  const handleVideoWatch = () => {
+    setCoins((prev) => prev + 500); // Changed from 1000 to 500 coins
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0A192F] via-[#112240] to-[#233554] relative overflow-hidden p-4 pb-24">
       {/* Animated background circles */}
@@ -99,7 +103,7 @@ const Index = () => {
           <Leaderboard />
         </div>
       </div>
-      <FooterButtons onVideoWatch={() => setCoins(prev => prev + 1000)} />
+      <FooterButtons onVideoWatch={handleVideoWatch} />
     </div>
   );
 };

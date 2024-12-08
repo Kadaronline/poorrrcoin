@@ -2,6 +2,7 @@ import { Trophy } from "lucide-react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text3D, Center } from "@react-three/drei";
 import { useState } from "react";
+import * as THREE from "three";
 
 const mockLeaders = [
   { username: "Player1", coins: 1500 },
@@ -30,21 +31,21 @@ const LeaderboardItem = ({ position, data, index }: any) => {
         />
       </mesh>
       <Text3D
+        font="/fonts/helvetiker_regular.typeface.json"
         position={[-1.8, -0.1, 0.1]}
         size={0.2}
         height={0.1}
-        font="/fonts/helvetiker_regular.typeface.json"
       >
         {`${index + 1}. ${data.username}`}
         <meshStandardMaterial color="white" />
       </Text3D>
       <Text3D
+        font="/fonts/helvetiker_regular.typeface.json"
         position={[1, -0.1, 0.1]}
         size={0.2}
         height={0.1}
-        font="/fonts/helvetiker_regular.typeface.json"
       >
-        {data.coins}
+        {`${data.coins}`}
         <meshStandardMaterial color="#6C63FF" />
       </Text3D>
     </group>
@@ -84,7 +85,10 @@ const Leaderboard = () => {
         <h2 className="text-xl font-bold text-white">Leaderboard</h2>
       </div>
       <div className="h-[300px] w-full">
-        <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
+        <Canvas
+          camera={{ position: [0, 0, 5], fov: 50 }}
+          gl={{ antialias: true }}
+        >
           <Scene />
         </Canvas>
       </div>

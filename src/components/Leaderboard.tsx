@@ -35,18 +35,18 @@ const LeaderboardItem = ({ position, data, index }: any) => {
         position={[-1.8, -0.1, 0.1]}
         size={0.2}
         height={0.1}
+        material={new THREE.MeshStandardMaterial({ color: "white" })}
       >
         {`${index + 1}. ${data.username}`}
-        <meshStandardMaterial color="white" />
       </Text3D>
       <Text3D
         font="/fonts/helvetiker_regular.typeface.json"
         position={[1, -0.1, 0.1]}
         size={0.2}
         height={0.1}
+        material={new THREE.MeshStandardMaterial({ color: "#6C63FF" })}
       >
         {`${data.coins}`}
-        <meshStandardMaterial color="#6C63FF" />
       </Text3D>
     </group>
   );

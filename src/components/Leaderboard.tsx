@@ -1,6 +1,6 @@
-import { Trophy } from "lucide-react";
+import { Trophy, Coins } from "lucide-react";
 import { useState } from "react";
-import WalletDialog from "./WalletDialog";
+import { motion, AnimatePresence } from "framer-motion";
 
 const mockLeaders = [
   { username: "Player1", coins: 1500 },
@@ -15,6 +15,7 @@ interface LeaderboardItemProps {
 
 const LeaderboardItem = ({ data, index }: LeaderboardItemProps) => {
   const [hovered, setHovered] = useState(false);
+  const [showCoinAnimation, setShowCoinAnimation] = useState(false);
   
   const getColor = (position: number) => {
     switch(position) {
@@ -23,6 +24,11 @@ const LeaderboardItem = ({ data, index }: LeaderboardItemProps) => {
       case 2: return "from-amber-600/20 to-amber-700/20 border-amber-600/30"; // Bronze
       default: return "from-gray-200/10 to-gray-300/10 border-gray-200/20";
     }
+  };
+
+  const handleCoinClick = () => {
+    setShowCoinAnimation(true);
+    setTimeout(() => setShowCoinAnimation(false), 1000);
   };
 
   return (
@@ -50,10 +56,43 @@ const LeaderboardItem = ({ data, index }: LeaderboardItemProps) => {
             {data.username}
           </span>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-lg font-semibold text-game-primary bg-white/5 px-4 py-1 rounded-full">
+        <div className="flex items-center gap-2 relative">
+          <button
+            onClick={handleCoinClick}
+            className="text-lg font-semibold text-game-primary bg-white/5 px-4 py-1 rounded-full flex items-center gap-2 hover:bg-white/10 transition-colors"
+          >
+            <Coins className="w-5 h-5 text-yellow-400" />
             {data.coins.toLocaleString()}
-          </span>
+          </button>
+          
+          <AnimatePresence>
+            {showCoinAnimation && (
+              <motion.div
+                initial={{ scale: 0, y: 0, opacity: 0 }}
+                animate={{ scale: 1, y: -20, opacity: 1 }}
+                exit={{ scale: 0, y: -40, opacity: 0 }}
+                className="absolute -top-2 left-1/2 -translate-x-1/2"
+              >
+                <div className="flex gap-1">
+                  {[...Array(3)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ y: 0 }}
+                      animate={{ y: [-10, 10] }}
+                      transition={{
+                        duration: 0.5,
+                        repeat: 1,
+                        repeatType: "reverse",
+                        delay: i * 0.1,
+                      }}
+                    >
+                      <Coins className="w-4 h-4 text-yellow-400" />
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>
@@ -65,12 +104,11 @@ const Leaderboard = () => {
     <div className="relative">
       <div className="absolute inset-0 bg-gradient-to-b from-game-primary/20 to-transparent blur-3xl -z-10" />
       <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 w-full max-w-md border border-white/10">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center mb-8">
           <div className="flex items-center gap-3">
             <Trophy className="w-8 h-8 text-yellow-400" />
             <h2 className="text-2xl font-bold text-white">Leaderboard</h2>
           </div>
-          <WalletDialog />
         </div>
         <div className="space-y-2">
           {mockLeaders.map((leader, index) => (

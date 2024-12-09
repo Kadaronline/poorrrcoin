@@ -1,5 +1,6 @@
 import { Trophy } from "lucide-react";
 import { useState } from "react";
+import WalletDialog from "./WalletDialog";
 
 const mockLeaders = [
   { username: "Player1", coins: 1500 },
@@ -17,37 +18,43 @@ const LeaderboardItem = ({ data, index }: LeaderboardItemProps) => {
   
   const getColor = (position: number) => {
     switch(position) {
-      case 0: return "bg-yellow-500"; // Gold
-      case 1: return "bg-gray-300"; // Silver
-      case 2: return "bg-amber-600"; // Bronze
-      default: return "bg-gray-200";
+      case 0: return "from-yellow-500/20 to-yellow-600/20 border-yellow-500/30"; // Gold
+      case 1: return "from-gray-300/20 to-gray-400/20 border-gray-300/30"; // Silver
+      case 2: return "from-amber-600/20 to-amber-700/20 border-amber-600/30"; // Bronze
+      default: return "from-gray-200/10 to-gray-300/10 border-gray-200/20";
     }
   };
 
   return (
     <div
-      className={`relative transition-transform duration-200 ${
+      className={`relative transition-all duration-300 ${
         hovered ? "scale-105" : "scale-100"
       }`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       <div
-        className={`flex items-center justify-between p-4 mb-2 rounded-lg backdrop-blur-sm ${getColor(
+        className={`flex items-center justify-between p-6 mb-3 rounded-xl bg-gradient-to-r ${getColor(
           index
-        )} bg-opacity-20 border border-white/10`}
+        )} backdrop-blur-sm border hover:border-opacity-50 transition-all duration-300`}
       >
-        <div className="flex items-center gap-3">
-          <span className="text-lg font-bold text-white">
-            {index + 1}.
-          </span>
-          <span className="text-lg text-white">
+        <div className="flex items-center gap-4">
+          <div className={`w-8 h-8 flex items-center justify-center rounded-full ${
+            index === 0 ? "bg-yellow-500" :
+            index === 1 ? "bg-gray-300" :
+            index === 2 ? "bg-amber-600" : "bg-gray-200"
+          } text-game-dark font-bold`}>
+            {index + 1}
+          </div>
+          <span className="text-lg font-medium text-white">
             {data.username}
           </span>
         </div>
-        <span className="text-lg font-semibold text-game-primary">
-          {data.coins.toLocaleString()}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-lg font-semibold text-game-primary bg-white/5 px-4 py-1 rounded-full">
+            {data.coins.toLocaleString()}
+          </span>
+        </div>
       </div>
     </div>
   );
@@ -55,19 +62,25 @@ const LeaderboardItem = ({ data, index }: LeaderboardItemProps) => {
 
 const Leaderboard = () => {
   return (
-    <div className="bg-white/10 backdrop-blur-lg rounded-lg p-4 w-full max-w-md">
-      <div className="flex items-center gap-2 mb-6">
-        <Trophy className="w-6 h-6 text-yellow-400" />
-        <h2 className="text-xl font-bold text-white">Leaderboard</h2>
-      </div>
-      <div className="space-y-2">
-        {mockLeaders.map((leader, index) => (
-          <LeaderboardItem
-            key={leader.username}
-            data={leader}
-            index={index}
-          />
-        ))}
+    <div className="relative">
+      <div className="absolute inset-0 bg-gradient-to-b from-game-primary/20 to-transparent blur-3xl -z-10" />
+      <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 w-full max-w-md border border-white/10">
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <Trophy className="w-8 h-8 text-yellow-400" />
+            <h2 className="text-2xl font-bold text-white">Leaderboard</h2>
+          </div>
+          <WalletDialog />
+        </div>
+        <div className="space-y-2">
+          {mockLeaders.map((leader, index) => (
+            <LeaderboardItem
+              key={leader.username}
+              data={leader}
+              index={index}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

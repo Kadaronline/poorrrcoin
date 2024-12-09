@@ -1,7 +1,7 @@
 import { Trophy } from "lucide-react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text3D, Center } from "@react-three/drei";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import * as THREE from "three";
 
 const mockLeaders = [
@@ -19,17 +19,7 @@ interface LeaderboardItemProps {
 const LeaderboardItem = ({ position, data, index }: LeaderboardItemProps) => {
   const [hovered, setHovered] = useState(false);
   
-  const materials = useMemo(() => ({
-    text: new THREE.MeshStandardMaterial({ color: "white" }),
-    coins: new THREE.MeshStandardMaterial({ color: "#6C63FF" }),
-    box: new THREE.MeshStandardMaterial({
-      color: index === 0 ? "#FFD700" : index === 1 ? "#C0C0C0" : "#CD7F32",
-      opacity: 0.7,
-      transparent: true,
-      metalness: 0.8,
-      roughness: 0.2,
-    })
-  }), [index]);
+  const color = index === 0 ? "#FFD700" : index === 1 ? "#C0C0C0" : "#CD7F32";
 
   return (
     <group
@@ -40,7 +30,13 @@ const LeaderboardItem = ({ position, data, index }: LeaderboardItemProps) => {
     >
       <mesh>
         <boxGeometry args={[4, 0.5, 0.1]} />
-        <primitive object={materials.box} attach="material" />
+        <meshStandardMaterial
+          color={color}
+          opacity={0.7}
+          transparent
+          metalness={0.8}
+          roughness={0.2}
+        />
       </mesh>
       
       <Text3D
@@ -50,7 +46,7 @@ const LeaderboardItem = ({ position, data, index }: LeaderboardItemProps) => {
         height={0.1}
       >
         {`${index + 1}. ${data.username}`}
-        <primitive object={materials.text} attach="material" />
+        <meshStandardMaterial color="white" />
       </Text3D>
       
       <Text3D
@@ -60,7 +56,7 @@ const LeaderboardItem = ({ position, data, index }: LeaderboardItemProps) => {
         height={0.1}
       >
         {`${data.coins}`}
-        <primitive object={materials.coins} attach="material" />
+        <meshStandardMaterial color="#6C63FF" />
       </Text3D>
     </group>
   );

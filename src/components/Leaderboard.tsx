@@ -2,7 +2,6 @@ import { Trophy } from "lucide-react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text3D, Center } from "@react-three/drei";
 import { useState } from "react";
-import * as THREE from "three";
 
 const mockLeaders = [
   { username: "Player1", coins: 1500 },
@@ -44,9 +43,9 @@ const LeaderboardItem = ({ position, data, index }: LeaderboardItemProps) => {
         position={[-1.8, -0.1, 0.1]}
         size={0.2}
         height={0.1}
+        material={new THREE.MeshStandardMaterial({ color: "white" })}
       >
         {`${index + 1}. ${data.username}`}
-        <meshStandardMaterial color="white" />
       </Text3D>
       
       <Text3D
@@ -54,9 +53,9 @@ const LeaderboardItem = ({ position, data, index }: LeaderboardItemProps) => {
         position={[1, -0.1, 0.1]}
         size={0.2}
         height={0.1}
+        material={new THREE.MeshStandardMaterial({ color: "#6C63FF" })}
       >
         {`${data.coins}`}
-        <meshStandardMaterial color="#6C63FF" />
       </Text3D>
     </group>
   );

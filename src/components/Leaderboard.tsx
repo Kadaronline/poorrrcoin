@@ -1,7 +1,7 @@
 import { Trophy } from "lucide-react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text3D, Center } from "@react-three/drei";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import * as THREE from "three";
 
 const mockLeaders = [
@@ -10,8 +10,26 @@ const mockLeaders = [
   { username: "Player3", coins: 800 },
 ];
 
-const LeaderboardItem = ({ position, data, index }: any) => {
+interface LeaderboardItemProps {
+  position: [number, number, number];
+  data: { username: string; coins: number };
+  index: number;
+}
+
+const LeaderboardItem = ({ position, data, index }: LeaderboardItemProps) => {
   const [hovered, setHovered] = useState(false);
+  
+  const materials = useMemo(() => ({
+    text: new THREE.MeshStandardMaterial({ color: "white" }),
+    coins: new THREE.MeshStandardMaterial({ color: "#6C63FF" }),
+    box: new THREE.MeshStandardMaterial({
+      color: index === 0 ? "#FFD700" : index === 1 ? "#C0C0C0" : "#CD7F32",
+      opacity: 0.7,
+      transparent: true,
+      metalness: 0.8,
+      roughness: 0.2,
+    })
+  }), [index]);
 
   return (
     <group
@@ -20,33 +38,29 @@ const LeaderboardItem = ({ position, data, index }: any) => {
       onPointerOut={() => setHovered(false)}
       scale={hovered ? 1.1 : 1}
     >
-      <mesh position={[0, 0, 0]}>
+      <mesh>
         <boxGeometry args={[4, 0.5, 0.1]} />
-        <meshStandardMaterial 
-          color={index === 0 ? "#FFD700" : index === 1 ? "#C0C0C0" : "#CD7F32"} 
-          opacity={0.7}
-          transparent
-          metalness={0.8}
-          roughness={0.2}
-        />
+        <primitive object={materials.box} attach="material" />
       </mesh>
+      
       <Text3D
         font="/fonts/helvetiker_regular.typeface.json"
         position={[-1.8, -0.1, 0.1]}
         size={0.2}
         height={0.1}
-        material={new THREE.MeshStandardMaterial({ color: "white" })}
       >
         {`${index + 1}. ${data.username}`}
+        <primitive object={materials.text} attach="material" />
       </Text3D>
+      
       <Text3D
         font="/fonts/helvetiker_regular.typeface.json"
         position={[1, -0.1, 0.1]}
         size={0.2}
         height={0.1}
-        material={new THREE.MeshStandardMaterial({ color: "#6C63FF" })}
       >
         {`${data.coins}`}
+        <primitive object={materials.coins} attach="material" />
       </Text3D>
     </group>
   );

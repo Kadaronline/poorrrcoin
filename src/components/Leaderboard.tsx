@@ -1,15 +1,15 @@
 import { Trophy, Coins } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
 
-const mockLeaders = [
-  { username: "Player1", coins: 1500 },
-  { username: "Player2", coins: 1200 },
-  { username: "Player3", coins: 800 },
-];
+interface LeaderboardEntry {
+  username: string;
+  coins: number;
+}
 
 interface LeaderboardItemProps {
-  data: { username: string; coins: number };
+  data: LeaderboardEntry;
   index: number;
 }
 
@@ -49,7 +49,7 @@ const LeaderboardItem = ({ data, index }: LeaderboardItemProps) => {
             index === 0 ? "bg-yellow-500" :
             index === 1 ? "bg-gray-300" :
             index === 2 ? "bg-amber-600" : "bg-gray-200"
-          } text-game-dark font-bold`}>
+          } text-white font-bold`}>
             {index + 1}
           </div>
           <span className="text-lg font-medium text-white">
@@ -59,7 +59,7 @@ const LeaderboardItem = ({ data, index }: LeaderboardItemProps) => {
         <div className="flex items-center gap-2 relative">
           <button
             onClick={handleCoinClick}
-            className="text-lg font-semibold text-game-primary bg-white/5 px-4 py-1 rounded-full flex items-center gap-2 hover:bg-white/10 transition-colors"
+            className="text-lg font-semibold text-white bg-white/5 px-4 py-1 rounded-full flex items-center gap-2 hover:bg-white/10 transition-colors"
           >
             <Coins className="w-5 h-5 text-yellow-400" />
             {data.coins.toLocaleString()}
@@ -100,6 +100,48 @@ const LeaderboardItem = ({ data, index }: LeaderboardItemProps) => {
 };
 
 const Leaderboard = () => {
+  const [leaders, setLeaders] = useState<LeaderboardEntry[]>([]);
+
+  useEffect(() => {
+    const fetchLeaders = async () => {
+      const { data, error } = await supabase
+        .from('leaderboard')
+        .select('username, coins')
+        .order('coins', { ascending: false })
+        .limit(3);
+      
+      if (error) {
+        console.error('Error fetching leaderboard:', error);
+        return;
+      }
+
+      if (data) {
+        setLeaders(data);
+      }
+    };
+
+    fetchLeaders();
+    
+    // Set up real-time subscription
+    const subscription = supabase
+      .channel('leaderboard_changes')
+      .on('postgres_changes', 
+        { 
+          event: '*', 
+          schema: 'public', 
+          table: 'leaderboard' 
+        }, 
+        () => {
+          fetchLeaders();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
   return (
     <div className="relative">
       <div className="absolute inset-0 bg-gradient-to-b from-game-primary/20 to-transparent blur-3xl -z-10" />
@@ -111,7 +153,7 @@ const Leaderboard = () => {
           </div>
         </div>
         <div className="space-y-2">
-          {mockLeaders.map((leader, index) => (
+          {leaders.map((leader, index) => (
             <LeaderboardItem
               key={leader.username}
               data={leader}

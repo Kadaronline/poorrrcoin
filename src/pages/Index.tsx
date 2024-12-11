@@ -22,38 +22,81 @@ const Index = () => {
   };
 
   const handleVideoWatch = () => {
-    setCoins((prev) => prev + 500); // Changed from 1000 to 500 coins
+    setCoins((prev) => prev + 500);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0A192F] via-[#112240] to-[#233554] relative overflow-hidden p-4 pb-24">
-      {/* Animated background circles */}
+    <div className="min-h-screen bg-[#0A0E17] relative overflow-hidden p-4 pb-24">
+      {/* Geometric patterns */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.2, 0.1, 0.2],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 rounded-full bg-game-primary/10 blur-3xl"
-        />
-        <motion.div
-          animate={{
-            scale: [1, 1.3, 1],
-            opacity: [0.15, 0.05, 0.15],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1,
-          }}
-          className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 rounded-full bg-game-secondary/10 blur-3xl"
-        />
+        {/* Lines */}
+        <div className="absolute top-0 left-0 w-full h-full">
+          {[...Array(5)].map((_, i) => (
+            <motion.div
+              key={`line-${i}`}
+              className="absolute h-px bg-[#00E6FF]/20"
+              style={{
+                width: '200px',
+                transform: `rotate(${45 + i * 15}deg)`,
+                left: `${20 + i * 10}%`,
+                top: `${10 + i * 15}%`
+              }}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: i * 0.2 }}
+            />
+          ))}
+        </div>
+        
+        {/* Squares */}
+        {[...Array(4)].map((_, i) => (
+          <motion.div
+            key={`square-${i}`}
+            className="absolute border border-[#00E6FF]/30"
+            style={{
+              width: `${40 - i * 8}px`,
+              height: `${40 - i * 8}px`,
+              left: `${30 + i * 15}%`,
+              top: `${20 + i * 10}%`
+            }}
+            initial={{ opacity: 0, rotate: 45 }}
+            animate={{ 
+              opacity: [0.2, 0.4, 0.2],
+              rotate: [45, 90, 45]
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              delay: i * 0.5
+            }}
+          />
+        ))}
+        
+        {/* Grid patterns */}
+        <div className="absolute bottom-0 right-0 w-64 h-64 opacity-20">
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={`grid-${i}`}
+              className="absolute border-r border-[#00E6FF]/20"
+              style={{
+                height: '100%',
+                width: '1px',
+                left: `${i * 12.5}%`
+              }}
+            />
+          ))}
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={`grid-horizontal-${i}`}
+              className="absolute border-b border-[#00E6FF]/20"
+              style={{
+                width: '100%',
+                height: '1px',
+                top: `${i * 12.5}%`
+              }}
+            />
+          ))}
+        </div>
       </div>
 
       <div className="max-w-4xl mx-auto relative">

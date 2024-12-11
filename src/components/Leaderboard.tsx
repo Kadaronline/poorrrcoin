@@ -2,14 +2,12 @@ import { Trophy, Coins } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
-interface LeaderboardEntry {
-  username: string;
-  coins: number;
-}
+type LeaderboardEntry = Database['public']['Tables']['leaderboard']['Row'];
 
 interface LeaderboardItemProps {
-  data: LeaderboardEntry;
+  data: Pick<LeaderboardEntry, 'username' | 'coins'>;
   index: number;
 }
 
@@ -100,7 +98,7 @@ const LeaderboardItem = ({ data, index }: LeaderboardItemProps) => {
 };
 
 const Leaderboard = () => {
-  const [leaders, setLeaders] = useState<LeaderboardEntry[]>([]);
+  const [leaders, setLeaders] = useState<Pick<LeaderboardEntry, 'username' | 'coins'>[]>([]);
 
   useEffect(() => {
     const fetchLeaders = async () => {

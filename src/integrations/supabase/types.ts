@@ -6,32 +6,10 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
-      leaderboard: {
-        Row: {
-          id: string
-          username: string
-          coins: number
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          username: string
-          coins: number
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          username?: string
-          coins?: number
-          created_at?: string
-          updated_at?: string
-        }
-      }
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never

@@ -26,80 +26,64 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0E17] relative overflow-hidden p-4 pb-24">
-      {/* Geometric patterns */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Lines */}
-        <div className="absolute top-0 left-0 w-full h-full">
+    <div className="min-h-screen relative overflow-hidden p-4 pb-24">
+      {/* Background gradient and shapes */}
+      <div className="fixed inset-0 bg-gradient-to-br from-purple-900 via-purple-600 to-pink-500 z-0">
+        {/* Flowing curves */}
+        <motion.div
+          className="absolute inset-0"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
+          {[...Array(3)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute bottom-0 left-0 right-0 h-[40vh] opacity-30"
+              style={{
+                background: `radial-gradient(circle at ${50 + i * 20}% ${100 - i * 10}%, rgba(147, 51, 234, 0.7), transparent)`,
+                transform: `translateY(${i * 10}px) scale(${1 + i * 0.2})`,
+              }}
+              animate={{
+                y: [0, -20, 0],
+                scale: [1 + i * 0.2, 1.1 + i * 0.2, 1 + i * 0.2],
+              }}
+              transition={{
+                duration: 8 + i * 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+          
+          {/* Floating orbs */}
           {[...Array(5)].map((_, i) => (
             <motion.div
-              key={`line-${i}`}
-              className="absolute h-px bg-[#00E6FF]/20"
+              key={`orb-${i}`}
+              className="absolute rounded-full bg-purple-300/30 backdrop-blur-sm"
               style={{
-                width: '200px',
-                transform: `rotate(${45 + i * 15}deg)`,
-                left: `${20 + i * 10}%`,
-                top: `${10 + i * 15}%`
+                width: `${40 - i * 5}px`,
+                height: `${40 - i * 5}px`,
+                left: `${20 + i * 15}%`,
+                top: `${30 + i * 10}%`,
               }}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: i * 0.2 }}
-            />
-          ))}
-        </div>
-        
-        {/* Squares */}
-        {[...Array(4)].map((_, i) => (
-          <motion.div
-            key={`square-${i}`}
-            className="absolute border border-[#00E6FF]/30"
-            style={{
-              width: `${40 - i * 8}px`,
-              height: `${40 - i * 8}px`,
-              left: `${30 + i * 15}%`,
-              top: `${20 + i * 10}%`
-            }}
-            initial={{ opacity: 0, rotate: 45 }}
-            animate={{ 
-              opacity: [0.2, 0.4, 0.2],
-              rotate: [45, 90, 45]
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              delay: i * 0.5
-            }}
-          />
-        ))}
-        
-        {/* Grid patterns */}
-        <div className="absolute bottom-0 right-0 w-64 h-64 opacity-20">
-          {[...Array(8)].map((_, i) => (
-            <div
-              key={`grid-${i}`}
-              className="absolute border-r border-[#00E6FF]/20"
-              style={{
-                height: '100%',
-                width: '1px',
-                left: `${i * 12.5}%`
+              animate={{
+                y: [0, -30, 0],
+                x: [0, 20, 0],
+                scale: [1, 1.2, 1],
+              }}
+              transition={{
+                duration: 5 + i,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: i * 0.5,
               }}
             />
           ))}
-          {[...Array(8)].map((_, i) => (
-            <div
-              key={`grid-horizontal-${i}`}
-              className="absolute border-b border-[#00E6FF]/20"
-              style={{
-                width: '100%',
-                height: '1px',
-                top: `${i * 12.5}%`
-              }}
-            />
-          ))}
-        </div>
+        </motion.div>
       </div>
 
-      <div className="max-w-4xl mx-auto relative">
+      <div className="max-w-4xl mx-auto relative z-10">
         {/* Top Balance Display */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}

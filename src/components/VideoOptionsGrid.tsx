@@ -6,6 +6,7 @@ interface VideoOption {
   title: string;
   icon: React.ReactNode;
   videoId: string;
+  url: string;
 }
 
 interface VideoOptionsGridProps {
@@ -14,6 +15,15 @@ interface VideoOptionsGridProps {
 }
 
 const VideoOptionsGrid = ({ options, onVideoSelect }: VideoOptionsGridProps) => {
+  const handleClick = (option: VideoOption, e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).tagName === 'A') {
+      // Let the link handle the navigation
+      return;
+    }
+    // Otherwise open the video dialog
+    onVideoSelect(option.videoId);
+  };
+
   return (
     <div className="grid grid-cols-1 gap-4 mt-8 max-w-md mx-auto">
       <motion.h2
@@ -32,14 +42,22 @@ const VideoOptionsGrid = ({ options, onVideoSelect }: VideoOptionsGridProps) => 
         >
           <Card 
             className="bg-gray-900/60 backdrop-blur-lg border-gray-800 hover:bg-gray-800/60 transition-colors cursor-pointer"
-            onClick={() => onVideoSelect(option.videoId)}
+            onClick={(e) => handleClick(option, e)}
           >
             <div className="flex items-center justify-between p-4">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center">
                   {option.icon}
                 </div>
-                <span className="text-white font-medium">{option.title}</span>
+                <a 
+                  href={option.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-white font-medium hover:text-blue-400 transition-colors"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {option.title}
+                </a>
               </div>
               <ChevronRight className="w-6 h-6 text-gray-400" />
             </div>

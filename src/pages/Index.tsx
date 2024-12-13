@@ -33,21 +33,25 @@ const Index = () => {
       title: "Top-10 Ways to Earn Coins",
       icon: <Play className="w-8 h-8 text-red-500" />,
       videoId: "QeytleILFqY",
+      url: "https://youtu.be/QeytleILFqY",
     },
     {
       title: "Daily Rewards Guide",
       icon: <Play className="w-8 h-8 text-red-500" />,
       videoId: "QeytleILFqY",
+      url: "https://youtu.be/QeytleILFqY",
     },
     {
       title: "Special Events Calendar",
       icon: <Play className="w-8 h-8 text-red-500" />,
       videoId: "QeytleILFqY",
+      url: "https://youtu.be/QeytleILFqY",
     },
     {
       title: "Community Challenges",
       icon: <Play className="w-8 h-8 text-red-500" />,
       videoId: "QeytleILFqY",
+      url: "https://youtu.be/QeytleILFqY",
     },
   ];
 
@@ -132,6 +136,11 @@ const Index = () => {
       </div>
 
       <div className="max-w-4xl mx-auto relative z-10">
+        {/* Footer Buttons moved to top */}
+        <div className="mb-8">
+          <FooterButtons onVideoWatch={handleVideoWatch} />
+        </div>
+
         {/* Top Balance Display */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -176,7 +185,6 @@ const Index = () => {
 
         <VideoOptionsGrid options={options} onVideoSelect={setSelectedVideo} />
       </div>
-      <FooterButtons onVideoWatch={handleVideoWatch} />
 
       <VideoDialog videoId={selectedVideo} onClose={() => setSelectedVideo(null)} />
     </div>

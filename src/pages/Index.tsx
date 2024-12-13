@@ -6,12 +6,15 @@ import { Button } from "@/components/ui/button";
 import { Wallet, Coins, Play, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const Index = () => {
   const [coins, setCoins] = useState(() => {
     const savedCoins = localStorage.getItem("userCoins");
     return savedCoins ? parseInt(savedCoins) : 0;
   });
+
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
 
   useEffect(() => {
     localStorage.setItem("userCoins", coins.toString());
@@ -29,18 +32,22 @@ const Index = () => {
     {
       title: "Top-10 Ways to Earn Coins",
       icon: <Play className="w-8 h-8 text-red-500" />,
+      videoId: "QeytleILFqY",
     },
     {
       title: "Daily Rewards Guide",
       icon: <Play className="w-8 h-8 text-red-500" />,
+      videoId: "QeytleILFqY",
     },
     {
       title: "Special Events Calendar",
       icon: <Play className="w-8 h-8 text-red-500" />,
+      videoId: "QeytleILFqY",
     },
     {
       title: "Community Challenges",
       icon: <Play className="w-8 h-8 text-red-500" />,
+      videoId: "QeytleILFqY",
     },
   ];
 
@@ -177,7 +184,10 @@ const Index = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <Card className="bg-gray-900/60 backdrop-blur-lg border-gray-800 hover:bg-gray-800/60 transition-colors cursor-pointer">
+              <Card 
+                className="bg-gray-900/60 backdrop-blur-lg border-gray-800 hover:bg-gray-800/60 transition-colors cursor-pointer"
+                onClick={() => setSelectedVideo(option.videoId)}
+              >
                 <div className="flex items-center justify-between p-4">
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center">
@@ -193,6 +203,22 @@ const Index = () => {
         </div>
       </div>
       <FooterButtons onVideoWatch={handleVideoWatch} />
+
+      {/* Video Dialog */}
+      <Dialog open={!!selectedVideo} onOpenChange={() => setSelectedVideo(null)}>
+        <DialogContent className="sm:max-w-[800px] p-0 bg-black">
+          <div className="aspect-video w-full">
+            <iframe
+              width="100%"
+              height="100%"
+              src={selectedVideo ? `https://www.youtube.com/embed/${selectedVideo}` : ''}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="w-full h-full"
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

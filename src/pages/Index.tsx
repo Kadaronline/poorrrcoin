@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import CoinButton from "@/components/CoinButton";
 import CoinBalance from "@/components/CoinBalance";
-import Leaderboard from "@/components/Leaderboard";
 import FooterButtons from "@/components/FooterButtons";
 import { Button } from "@/components/ui/button";
 import { Wallet, Coins } from "lucide-react";
@@ -147,10 +146,6 @@ const Index = () => {
         
         <div className="flex-1 flex flex-col items-center justify-center gap-12 my-12">
           <CoinButton onTap={handleTap} />
-        </div>
-
-        <div className="w-full flex justify-center">
-          <Leaderboard />
         </div>
       </div>
       <FooterButtons onVideoWatch={handleVideoWatch} />

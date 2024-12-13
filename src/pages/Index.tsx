@@ -3,10 +3,10 @@ import CoinButton from "@/components/CoinButton";
 import CoinBalance from "@/components/CoinBalance";
 import FooterButtons from "@/components/FooterButtons";
 import { Button } from "@/components/ui/button";
-import { Wallet, Coins, Play, ChevronRight } from "lucide-react";
+import { Wallet, Coins, Play } from "lucide-react";
 import { motion } from "framer-motion";
-import { Card } from "@/components/ui/card";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import VideoOptionsGrid from "@/components/VideoOptionsGrid";
+import VideoDialog from "@/components/VideoDialog";
 
 const Index = () => {
   const [coins, setCoins] = useState(() => {
@@ -55,7 +55,6 @@ const Index = () => {
     <div className="min-h-screen relative overflow-hidden p-4 pb-24">
       {/* Background gradient and waves */}
       <div className="fixed inset-0 bg-[#000033] z-0">
-        {/* Animated waves */}
         <motion.div
           className="absolute inset-0"
           initial={{ opacity: 0 }}
@@ -175,50 +174,11 @@ const Index = () => {
           <CoinButton onTap={handleTap} />
         </div>
 
-        {/* Options Grid */}
-        <div className="grid grid-cols-1 gap-4 mt-8 max-w-md mx-auto">
-          {options.map((option, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <Card 
-                className="bg-gray-900/60 backdrop-blur-lg border-gray-800 hover:bg-gray-800/60 transition-colors cursor-pointer"
-                onClick={() => setSelectedVideo(option.videoId)}
-              >
-                <div className="flex items-center justify-between p-4">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center">
-                      {option.icon}
-                    </div>
-                    <span className="text-white font-medium">{option.title}</span>
-                  </div>
-                  <ChevronRight className="w-6 h-6 text-gray-400" />
-                </div>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
+        <VideoOptionsGrid options={options} onVideoSelect={setSelectedVideo} />
       </div>
       <FooterButtons onVideoWatch={handleVideoWatch} />
 
-      {/* Video Dialog */}
-      <Dialog open={!!selectedVideo} onOpenChange={() => setSelectedVideo(null)}>
-        <DialogContent className="sm:max-w-[800px] p-0 bg-black">
-          <div className="aspect-video w-full">
-            <iframe
-              width="100%"
-              height="100%"
-              src={selectedVideo ? `https://www.youtube.com/embed/${selectedVideo}` : ''}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="w-full h-full"
-            />
-          </div>
-        </DialogContent>
-      </Dialog>
+      <VideoDialog videoId={selectedVideo} onClose={() => setSelectedVideo(null)} />
     </div>
   );
 };

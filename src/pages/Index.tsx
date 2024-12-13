@@ -3,8 +3,9 @@ import CoinButton from "@/components/CoinButton";
 import CoinBalance from "@/components/CoinBalance";
 import FooterButtons from "@/components/FooterButtons";
 import { Button } from "@/components/ui/button";
-import { Wallet, Coins } from "lucide-react";
+import { Wallet, Coins, Play, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { Card } from "@/components/ui/card";
 
 const Index = () => {
   const [coins, setCoins] = useState(() => {
@@ -23,6 +24,25 @@ const Index = () => {
   const handleVideoWatch = () => {
     setCoins((prev) => prev + 500);
   };
+
+  const options = [
+    {
+      title: "Top-10 Ways to Earn Coins",
+      icon: <Play className="w-8 h-8 text-red-500" />,
+    },
+    {
+      title: "Daily Rewards Guide",
+      icon: <Play className="w-8 h-8 text-red-500" />,
+    },
+    {
+      title: "Special Events Calendar",
+      icon: <Play className="w-8 h-8 text-red-500" />,
+    },
+    {
+      title: "Community Challenges",
+      icon: <Play className="w-8 h-8 text-red-500" />,
+    },
+  ];
 
   return (
     <div className="min-h-screen relative overflow-hidden p-4 pb-24">
@@ -146,6 +166,30 @@ const Index = () => {
         
         <div className="flex-1 flex flex-col items-center justify-center gap-12 my-12">
           <CoinButton onTap={handleTap} />
+        </div>
+
+        {/* Options Grid */}
+        <div className="grid grid-cols-1 gap-4 mt-8 max-w-md mx-auto">
+          {options.map((option, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+            >
+              <Card className="bg-gray-900/60 backdrop-blur-lg border-gray-800 hover:bg-gray-800/60 transition-colors cursor-pointer">
+                <div className="flex items-center justify-between p-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center">
+                      {option.icon}
+                    </div>
+                    <span className="text-white font-medium">{option.title}</span>
+                  </div>
+                  <ChevronRight className="w-6 h-6 text-gray-400" />
+                </div>
+              </Card>
+            </motion.div>
+          ))}
         </div>
       </div>
       <FooterButtons onVideoWatch={handleVideoWatch} />

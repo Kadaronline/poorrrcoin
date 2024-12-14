@@ -31,7 +31,7 @@ const VideoOptionsGrid = ({ options, onVideoSelect }: VideoOptionsGridProps) => 
         animate={{ opacity: 1, y: 0 }}
         className="text-2xl font-bold text-white text-center mb-4"
       >
-        DAILY REWARD
+        DAILY REWARDS
       </motion.h2>
       {options.map((option, index) => (
         <motion.div
@@ -45,19 +45,22 @@ const VideoOptionsGrid = ({ options, onVideoSelect }: VideoOptionsGridProps) => 
             onClick={(e) => handleClick(option, e)}
           >
             <div className="flex items-center justify-between p-4">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center">
-                  {option.icon}
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center">
+                    {option.icon}
+                  </div>
+                  <a 
+                    href={option.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-white font-medium hover:text-blue-400 transition-colors"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {option.title}
+                  </a>
                 </div>
-                <a 
-                  href={option.url} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-white font-medium hover:text-blue-400 transition-colors"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {option.title}
-                </a>
+                <p className="text-sm text-gray-400 ml-16">Watch and get 2,000 coins</p>
               </div>
               <ChevronRight className="w-6 h-6 text-gray-400" />
             </div>

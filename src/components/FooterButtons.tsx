@@ -72,21 +72,23 @@ const FooterButtons = ({ onVideoWatch }: FooterButtonsProps) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-[#0A192F] to-transparent p-4">
       <div className="max-w-4xl mx-auto grid grid-cols-4 gap-4">
-        <DialogTrigger asChild onClick={() => setIsVideoDialogOpen(true)}>
-          <Button
-            variant="ghost"
-            className="flex flex-col items-center gap-2 text-white hover:text-white hover:bg-game-primary/20 transform hover:-translate-y-1 transition-all duration-200 p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 shadow-[0_8px_16px_rgba(0,0,0,0.2)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.3)]"
-          >
-            <Coins className="h-8 w-8" />
-            <span className="text-sm font-semibold">Earn</span>
-          </Button>
-        </DialogTrigger>
+        <Dialog open={isVideoDialogOpen} onOpenChange={setIsVideoDialogOpen}>
+          <DialogTrigger asChild>
+            <Button
+              variant="ghost"
+              className="flex flex-col items-center gap-2 text-white hover:text-white hover:bg-game-primary/20 transform hover:-translate-y-1 transition-all duration-200 p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 shadow-[0_8px_16px_rgba(0,0,0,0.2)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.3)]"
+            >
+              <Coins className="h-8 w-8" />
+              <span className="text-sm font-semibold">Earn</span>
+            </Button>
+          </DialogTrigger>
 
-        <VideoRewardsDialog 
-          open={isVideoDialogOpen}
-          onOpenChange={setIsVideoDialogOpen}
-          onVideoWatch={onVideoWatch}
-        />
+          <VideoRewardsDialog 
+            open={isVideoDialogOpen}
+            onOpenChange={setIsVideoDialogOpen}
+            onVideoWatch={onVideoWatch}
+          />
+        </Dialog>
 
         <Dialog>
           <DialogTrigger asChild>

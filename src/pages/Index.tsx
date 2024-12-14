@@ -135,12 +135,14 @@ const Index = () => {
         </motion.div>
       </div>
 
-      <div className="max-w-4xl mx-auto relative z-10">
-        {/* Footer Buttons moved to top */}
-        <div className="mb-8">
+      {/* Sticky Footer Buttons at top */}
+      <div className="sticky top-0 z-50 bg-gradient-to-b from-[#000033] to-transparent pb-4">
+        <div className="max-w-4xl mx-auto">
           <FooterButtons onVideoWatch={handleVideoWatch} />
         </div>
+      </div>
 
+      <div className="max-w-4xl mx-auto relative z-10 mt-4">
         {/* Top Balance Display */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}

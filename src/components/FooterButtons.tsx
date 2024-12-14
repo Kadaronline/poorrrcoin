@@ -53,20 +53,7 @@ const FooterButtons = ({ onVideoWatch }: FooterButtonsProps) => {
     return saved ? JSON.parse(saved) : [];
   });
   const watchTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  const handleClick = (action: string) => {
-    if (action === "Invite") {
-      handleInvite();
-      return;
-    }
-    if (action === "Earn") {
-      return; // Dialog will handle this
-    }
-    toast({
-      title: "Coming Soon",
-      description: `${action} feature will be available soon!`,
-    });
-  };
+  const watchStartTimeRef = useRef<number | null>(null);
 
   const handleVideoStart = (videoUrl: string) => {
     if (watchedVideos.includes(videoUrl)) {
@@ -77,9 +64,17 @@ const FooterButtons = ({ onVideoWatch }: FooterButtonsProps) => {
       return;
     }
 
+    // Clear any existing timer
+    if (watchTimerRef.current) {
+      clearTimeout(watchTimerRef.current);
+    }
+
+    // Set start time
+    watchStartTimeRef.current = Date.now();
+
     toast({
       title: "Video Started",
-      description: "Watch for at least 1 minute to earn 500 coins!",
+      description: "Watch for at least 1 minute to earn 2,000 coins!",
     });
 
     // Start the timer
@@ -93,9 +88,29 @@ const FooterButtons = ({ onVideoWatch }: FooterButtonsProps) => {
       onVideoWatch();
       toast({
         title: "Reward Earned!",
-        description: "You've earned 500 coins for watching the video!",
+        description: "You've earned 2,000 coins for watching the video!",
       });
     }, 60000); // 1 minute timer
+  };
+
+  const handleVideoClose = () => {
+    if (watchTimerRef.current) {
+      clearTimeout(watchTimerRef.current);
+      
+      // Calculate watch duration
+      if (watchStartTimeRef.current) {
+        const watchDuration = Date.now() - watchStartTimeRef.current;
+        if (watchDuration < 60000) { // Less than 1 minute
+          toast({
+            title: "Video Skipped",
+            description: "You need to watch for at least 1 minute to earn coins!",
+            variant: "destructive",
+          });
+        }
+      }
+      
+      watchStartTimeRef.current = null;
+    }
   };
 
   const handleSubscribe = (platform: 'telegram' | 'youtube') => {
@@ -151,7 +166,7 @@ const FooterButtons = ({ onVideoWatch }: FooterButtonsProps) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-[#0A192F] to-transparent p-4">
       <div className="max-w-4xl mx-auto grid grid-cols-4 gap-4">
-        <Dialog>
+        <Dialog onOpenChange={(open) => !open && handleVideoClose()}>
           <DialogTrigger asChild>
             <Button
               variant="ghost"

@@ -25,7 +25,7 @@ const Index = () => {
   };
 
   const handleVideoWatch = () => {
-    setCoins((prev) => prev + 2000); // Updated to 2,000 coins
+    setCoins((prev) => prev + 2000);
   };
 
   const options = [
